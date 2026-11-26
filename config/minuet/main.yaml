@@ -34,6 +34,9 @@ substitutions:
   # The version number of these packages.
   minuet_version: "4.0.0"
 
+  # Vittil crash reports: the project key from Settings in the Vittil app.
+  vittil_project_key: "ecr_your_project_key"
+
   # Whether to enable support for accessories.
   # Refer to minuet/accessory.yaml for flags to enable/disable specific accessories independently.
   minuet_feature_accessory: false
@@ -117,6 +120,15 @@ esp32:
       assertion_level: silent
       # Omit unnecessary flash drivers (saved ~1397 bytes).
       flash_chip: generic
+
+# Crash reports: the Vittil SDK keeps a crash's coredump in flash and uploads it decoded on the next boot,
+# with the log tail, so a crash in the field reaches https://app.vittil.io without a serial cable.
+external_components:
+  - source: github://vittil-io/vittil
+    components: [vittil]
+
+vittil:
+  project_key: ${vittil_project_key}
 
 # We expect Minuet to be powered most of the time so we can reduce the flash write interval
 # from the default to further improve longevity although it should already be ample.
